@@ -11,16 +11,16 @@ PhantomJs available at : http://phantomjs.org/download.html
 
    <b> 1. starting up the Export server</b>
   
-    <code>phantomjs kendoUI-convert.js -host 127.0.0.1 -post 2002</code>
+    phantomjs kendoUI-convert.js -host 127.0.0.1 -post 2002
 
    <b> 2. using via curl</b>
 
-    <code>curl -H "Content-Type: application/json" -X POST -d '{"infile":"{xAxis: {categories: [\"Jan\", \"Feb\", \"Mar\"]},series: [{data: [29.9, 71.5, 106.4]}]}"}' 127.0.0.1:2002</code>
+    curl -H "Content-Type: application/json" -X POST -d '{"infile":"{xAxis: {categories: [\"Jan\", \"Feb\", \"Mar\"]},series: [{data: [29.9, 71.5, 106.4]}]}"}' 127.0.0.1:2002
   
     
 <b>Using as command line export</b>
 
-     <code>phantomjs kendoUI-convert.js -infile "{xAxis: {categories: [\"Jan\", \"Feb\", \"Mar\"]},series:[{data: [29.9, 71.5, 106.4]}]}"</code>
+     phantomjs kendoUI-convert.js -infile "{xAxis: {categories: [\"Jan\", \"Feb\", \"Mar\"]},series:[{data: [29.9, 71.5, 106.4]}]}"
     
     
   

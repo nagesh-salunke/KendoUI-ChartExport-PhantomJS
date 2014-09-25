@@ -23,43 +23,10 @@
         fs = require( "fs" ),
         serverMode = true;
 
-    args = mapCLArguments();
 
-    // set tmpDir, for output temporary files.
-    if ( args.tmpdir === undefined ) {
-        config.tmpDir = fs.workingDirectory + "/tmp";
-    }
-    else {
-        config.tmpDir = args.tmpdir;
-    }
-
-    // exists tmpDir and is it writable?
-    if ( !fs.exists( config.tmpDir ) ) {
-        try {
-            fs.makeDirectory( config.tmpDir );
-        }
-        catch ( e ) {
-            console.log( "ERROR: Cannot create temp directory for " + config.tmpDir );
-        }
-    }
-
-
-	//start server if started in server mode
-    if ( args.host !== undefined && args.port !== undefined ) {
-        startServer( args.host, args.port );
-    }
-    else {
-        // command line export
-        render( args, function( msg ) {
-            console.log( msg );
-            phantom.exit();
-        } );
-    }
-	
-
-	/**
-	* @desc mapping command line arguments
-	*/
+    /**
+     * @desc mapping command line arguments
+    */
     mapCLArguments = function() {
         var map = {},
             i,
@@ -74,11 +41,11 @@
         return map;
     };
 
-	/**
-	* @desc render chart server side
-	*  		Default export format is .png
-	* @TODO add parameterized export format
-	*/
+    /**
+     * @desc render chart server side
+     * Default export format is .png
+     * @TODO add parameterized export format
+    */
     render = function( params, exitCallback ) {
 	
         var page = require( "webpage" ).create(),
@@ -86,7 +53,7 @@
             exit,
             input = params.infile,
             n = new Date().getUTCMilliseconds(),
-            output = "tmp/KendoExportedchart_"+n+Math.floor((Math.random() * 1000) + 1)+".png",
+            output = config.tmpDir+"/KendoExportedchart_"+n+Math.floor((Math.random() * 1000) + 1)+".png",
             createChart;
 
         page.onConsoleMessage = function( msg ) {
@@ -107,9 +74,9 @@
         });
 
 
-		/**
-		* @desc appends chart in SVG format to document using KendoUI
-		*/
+	/**
+	* @desc appends chart in SVG format to document using KendoUI
+	*/
         createChart = function( input ) {
             $( "<div id=\"chart\"> </div>" ).appendTo( document.body );
 			try{
@@ -132,9 +99,9 @@
     };
 
 
-	/**
-	* @desc starts an export server given host and port
-	*/
+    /**
+     * @desc starts an export server given host and port
+    */
     startServer = function( host, port ) {
         var server = require( "webserver" ).create();
 
@@ -174,5 +141,42 @@
         serverMode = true;
         console.log( "OK, PhantomJS is ready for exporting kendoUI charts." );
     };
+    
+    
+    
+    //execution starts here
+    args = mapCLArguments();
+
+    // set tmpDir, for output temporary files.
+    if ( args.tmpdir === undefined ) {
+        config.tmpDir = fs.workingDirectory + "/tmp";
+    }
+    else {
+        config.tmpDir = args.tmpdir;
+    }
+
+    // exists tmpDir and is it writable?
+    if ( !fs.exists( config.tmpDir ) ) {
+        try {
+            fs.makeDirectory( config.tmpDir );
+        }
+        catch ( e ) {
+            console.log( "ERROR: Cannot create temp directory for " + config.tmpDir );
+        }
+    }
+
+
+	//start server if started in server mode
+    if ( args.host !== undefined && args.port !== undefined ) {
+        startServer( args.host, args.port );
+    }
+    else {
+        // command line export
+        render( args, function( msg ) {
+            console.log( msg );
+            phantom.exit();
+        } );
+    }
+	
 
 }());

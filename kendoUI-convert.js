@@ -82,7 +82,7 @@
 			try{
 				$( "#chart" ).kendoChart(input);
 			}catch( e ){
-				console.log("ERROR : expection while creating chart from KendoUI");
+				console.log("ERROR : Exception while creating chart from KendoUI");
 			}
         };
 

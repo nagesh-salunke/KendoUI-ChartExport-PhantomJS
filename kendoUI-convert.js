@@ -62,7 +62,7 @@
 
         page.open( "export.html", function( status ) {
             // load chart in page
-            page.evaluate( createSVG ,input);
+            page.evaluate( createChart ,input);
 
 			//create png of the page
             page.evaluate( function() {

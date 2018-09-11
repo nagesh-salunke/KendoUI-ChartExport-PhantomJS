@@ -4,10 +4,10 @@
  * License: https://github.com/salunkenagesh14/KendoUI-ChartExport-PhantomJS/blob/master/LICENSE
  * (c) 20013-2014
  * version: 1.0
- * 
+ *
  * JavaScript for using kendo ui export on server side
  * Supported formats
- * 1. start as a web server		
+ * 1. start as a web server
  * 2. Export using  command line arguments
  */
 
@@ -15,7 +15,7 @@
     "use strict";
 
     var config={},
-	    mapCLArguments,
+	mapCLArguments,
         render,
         startServer,
         args,
@@ -47,7 +47,7 @@
      * @TODO add parameterized export format
     */
     render = function( params, exitCallback ) {
-	
+
         var page = require( "webpage" ).create(),
             renderSVG,
             exit,
@@ -64,7 +64,7 @@
             // load chart in page
             page.evaluate( createChart ,input);
 
-			//create png of the page
+	    //create png of the page
             page.evaluate( function() {
                 var body = document.body;
                 body.style.backgroundColor = '#fff';
@@ -79,16 +79,16 @@
 	*/
         createChart = function( input ) {
             $( "<div id=\"chart\"> </div>" ).appendTo( document.body );
-			try{
-				$( "#chart" ).kendoChart(input);
-			}catch( e ){
-				console.log("ERROR : Exception while creating chart from KendoUI");
-			}
+	    try{
+		$( "#chart" ).kendoChart(input);
+	    }catch( e ){
+		console.log("ERROR : Exception while creating chart from KendoUI");
+	    }
         };
 
-		/**
-		* @desc page close and return callback
-		*/
+	/**
+	 * @desc page close and return callback
+	 */
         exit = function( resultMessage ) {
             if ( serverMode ) {
                 page.close();
@@ -107,43 +107,43 @@
 
         server.listen( host + ":" + port, function( request, response ) {
 
-			var jsonStr = request.post,
+	    var jsonStr = request.post,
                 params,
                 msg;
-                
-				try {
-                    params = JSON.parse( jsonStr );
-                    if ( params.status ) {
-                        // for server health validation
-                        response.statusCode = 200;
-                        response.write( "OK" );
-                        response.close();
-                    }
-                    else {
-                        render( params, function( result ) {
-                            response.statusCode = 200;
-                            response.write( result );
-                            response.close();
-                        } );
-                    }
-                }
-                catch ( e ) {
-                    msg = "Failed rendering: \n" + e;
-                    response.statusCode = 500;
-                    response.setHeader( "Content-Type", "text/plain" );
-                    response.setHeader( "Content-Length", msg.length );
-                    response.write( msg );
+
+	    try {
+                params = JSON.parse( jsonStr );
+                if ( params.status ) {
+                    // for server health validation
+                    response.statusCode = 200;
+                    response.write( "OK" );
                     response.close();
                 }
-            }); 
+                else {
+                    render( params, function( result ) {
+                        response.statusCode = 200;
+                        response.write( result );
+                        response.close();
+                    } );
+                }
+            }
+            catch ( e ) {
+                msg = "Failed rendering: \n" + e;
+                response.statusCode = 500;
+                response.setHeader( "Content-Type", "text/plain" );
+                response.setHeader( "Content-Length", msg.length );
+                response.write( msg );
+                response.close();
+            }
+        });
 
         // switch to serverMode
         serverMode = true;
         console.log( "OK, PhantomJS is ready for exporting kendoUI charts." );
     };
-    
-    
-    
+
+
+
     //execution starts here
     args = mapCLArguments();
 
@@ -166,7 +166,7 @@
     }
 
 
-	//start server if started in server mode
+    //start server if started in server mode
     if ( args.host !== undefined && args.port !== undefined ) {
         startServer( args.host, args.port );
     }
@@ -175,8 +175,8 @@
         render( args, function( msg ) {
             console.log( msg );
             phantom.exit();
-        } );
+        });
     }
-	
+
 
 }());

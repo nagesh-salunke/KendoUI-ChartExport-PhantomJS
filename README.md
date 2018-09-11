@@ -10,8 +10,8 @@ PhantomJs available at : http://phantomjs.org/download.html
 <b>Using as the export server</b>
 
    <b> 1. starting up the Export server</b>
-  
-    phantomjs kendoUI-convert.js -host 127.0.0.1 -post 2002
+
+    phantomjs kendoUI-convert.js -host 127.0.0.1 -port 2002
 
    <b> 2. using via curl</b>
 
